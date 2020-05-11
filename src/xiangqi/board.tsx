@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ReactComponentElement} from 'react'
 import * as csstype from 'csstype';
 
 import * as reactDND from 'react-dnd'
@@ -31,7 +31,8 @@ export class Board extends React.Component {
         return (<reactDND.DndProvider backend={dNDBackendHTML5}>
             <div style={{
                 width: xq.BoardWidth * 60,
-                height: xq.BoardHeight * 54,
+                height: xq.BoardHeight * 60,
+                // display: "inline-block",
             }}>
                 {xq.SquareIndices.map((sqIdx) =>
                     <Square key={sqIdx} {...{
@@ -72,7 +73,7 @@ export function Square(props: {
                     height: `${100 / xq.BoardHeight}%`,
                     fontSize: 8, color: "teal",
                 }}>
-            {props.index}<Piece {...{piece: props.piece, sqIdx: props.index}}/>
+            <Piece {...{piece: props.piece, sqIdx: props.index}}/>
         </button>)
 }
 
@@ -83,14 +84,22 @@ export function Piece(props: PieceProps) {
             isDragging: !!monitor.isDragging(),
         }),
     });
-    let pieceSymbol = xq.PieceSymbols.get(props.piece);
+    let pieceSrc = PieceImages.get(props.piece);
+    let imgElem = <br/>;
+    if (pieceSrc) {
+        imgElem =
+            <img
+                style={{width: "100%", height: "100%"}}
+                src={process.env.PUBLIC_URL + pieceSrc}
+            />
+    }
     return (
         <span ref={drag}
               style={{
                   opacity: isDragging ? 0.5 : 1, cursor: 'move',
                   color: "black", zIndex: 1, fontSize: 25,
               }}>
-            {pieceSymbol}
+            {imgElem}
         </span>
     )
 }
@@ -104,3 +113,22 @@ interface PieceProps {
 export const DraggableTypes = {
     PIECE: 'PIECE',
 };
+
+// PieceImages maps piece code to piece symbol
+export const PieceImages: Map<number, string> = new Map();
+PieceImages.set(xq.PAWN, "/xiangqi/PAWN1.png");
+PieceImages.set(xq.pawn, "/xiangqi/pawn.png");
+PieceImages.set(xq.ADVISER, "/xiangqi/ADVISER1.png");
+PieceImages.set(xq.adviser, "/xiangqi/adviser.png");
+PieceImages.set(xq.ELEPHANT, "/xiangqi/BISHOP1.png");
+PieceImages.set(xq.elephant, "/xiangqi/bishop.png");
+PieceImages.set(xq.HORSE, "/xiangqi/KNIGHT1.png");
+PieceImages.set(xq.horse, "/xiangqi/knight.png");
+PieceImages.set(xq.CANNON, "/xiangqi/CANNON1.png");
+PieceImages.set(xq.cannon, "/xiangqi/cannon.png");
+PieceImages.set(xq.CHARIOT, "/xiangqi/ROOK1.png");
+PieceImages.set(xq.chariot, "/xiangqi/rook.png");
+PieceImages.set(xq.KING, "/xiangqi/KING1.png");
+PieceImages.set(xq.king, "/xiangqi/king.png");
+PieceImages.set(xq.UNSEEN, "");
+PieceImages.set(xq.unseen, "");
