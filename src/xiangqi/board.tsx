@@ -30,10 +30,11 @@ export class Board extends React.Component {
         const sqW = `${100 / (xq.BoardWidth - 4)}%`;
         return (<reactDND.DndProvider backend={dNDBackendHTML5}>
             <table style={{
-                height: (xq.BoardHeight - 4) * 60,
-                width: (xq.BoardWidth - 4) * 60,
-                borderCollapse: "collapse",
-                borderSpacing: 0,
+                height: (xq.BoardHeight - 4) * 75,
+                width: (xq.BoardWidth - 4) * 75,
+                borderCollapse: "collapse", borderSpacing: 0,
+                backgroundImage: `url(${Images.Board})`,
+                backgroundRepeat: "no-repeat", backgroundSize: "100% 100%",
             }}>
                 <tbody>
                 {xq.BoardRows.map((row, rowIdx) =>
@@ -77,6 +78,7 @@ export function Square(props: {
         <button ref={drop} style={{
             height: `100%`, width: `100%`,
             textAlign: "left", verticalAlign: "top", fontSize: 8, color: "teal",
+            background: "rgba(0,0,0,0)", padding: 0, border: "none",
         }}>
             {props.index}
             <Piece {...{piece: props.piece, sqIdx: props.index}}/>
@@ -96,7 +98,7 @@ export function Piece(props: PieceProps) {
         imgElem =
             <img
                 style={{maxWidth: "100%", maxHeight: "100%"}}
-                src={process.env.PUBLIC_URL + pieceSrc}
+                src={pieceSrc}
             />
     }
     return (
@@ -120,21 +122,25 @@ export const DraggableTypes = {
     PIECE: 'PIECE',
 };
 
-// PieceImages maps piece code to piece symbol
+// PieceImages maps piece code to piece image
 export const PieceImages: Map<number, string> = new Map();
-PieceImages.set(xq.PAWN, "/xiangqi/PAWN1.png");
-PieceImages.set(xq.pawn, "/xiangqi/pawn.png");
-PieceImages.set(xq.ADVISER, "/xiangqi/ADVISER1.png");
-PieceImages.set(xq.adviser, "/xiangqi/adviser.png");
-PieceImages.set(xq.ELEPHANT, "/xiangqi/BISHOP1.png");
-PieceImages.set(xq.elephant, "/xiangqi/bishop.png");
-PieceImages.set(xq.HORSE, "/xiangqi/KNIGHT1.png");
-PieceImages.set(xq.horse, "/xiangqi/knight.png");
-PieceImages.set(xq.CANNON, "/xiangqi/CANNON1.png");
-PieceImages.set(xq.cannon, "/xiangqi/cannon.png");
-PieceImages.set(xq.CHARIOT, "/xiangqi/ROOK1.png");
-PieceImages.set(xq.chariot, "/xiangqi/rook.png");
-PieceImages.set(xq.KING, "/xiangqi/KING1.png");
-PieceImages.set(xq.king, "/xiangqi/king.png");
+PieceImages.set(xq.PAWN, process.env.PUBLIC_URL + "/xiangqi/PAWN1.png");
+PieceImages.set(xq.pawn, process.env.PUBLIC_URL + "/xiangqi/pawn.png");
+PieceImages.set(xq.ADVISER, process.env.PUBLIC_URL + "/xiangqi/ADVISER1.png");
+PieceImages.set(xq.adviser, process.env.PUBLIC_URL + "/xiangqi/adviser.png");
+PieceImages.set(xq.ELEPHANT, process.env.PUBLIC_URL + "/xiangqi/BISHOP1.png");
+PieceImages.set(xq.elephant, process.env.PUBLIC_URL + "/xiangqi/bishop.png");
+PieceImages.set(xq.HORSE, process.env.PUBLIC_URL + "/xiangqi/KNIGHT1.png");
+PieceImages.set(xq.horse, process.env.PUBLIC_URL + "/xiangqi/knight.png");
+PieceImages.set(xq.CANNON, process.env.PUBLIC_URL + "/xiangqi/CANNON1.png");
+PieceImages.set(xq.cannon, process.env.PUBLIC_URL + "/xiangqi/cannon.png");
+PieceImages.set(xq.CHARIOT, process.env.PUBLIC_URL + "/xiangqi/ROOK1.png");
+PieceImages.set(xq.chariot, process.env.PUBLIC_URL + "/xiangqi/rook.png");
+PieceImages.set(xq.KING, process.env.PUBLIC_URL + "/xiangqi/KING1.png");
+PieceImages.set(xq.king, process.env.PUBLIC_URL + "/xiangqi/king.png");
 PieceImages.set(xq.UNSEEN, "");
 PieceImages.set(xq.unseen, "");
+
+export const Images: Record<string, string> = {
+    Board: process.env.PUBLIC_URL + "/xiangqi/zboard.png",
+};
