@@ -6,17 +6,27 @@ export const BoardWidth = 13;
 export const BoardHeight = 14;
 
 export const SquareIndices: number[] = [];
+// BoardRows does not count padding squares
+export const BoardRows: number[][] = [];
 // map square index to visibility,
 // the board has 2 ranks and 2 files that should be hidden
 export const OffBoards: Record<number, csstype.VisibilityProperty> = {};
 for (let y = BoardHeight - 1; y >= 0; y--) {
+    let row: number[] = [];
     for (let x = 0; x < BoardWidth; x++) {
         let sqIdx = y * BoardWidth + x;
         SquareIndices.push(sqIdx);
         let isOffBoards = x < 2 || y < 2 ||
             x >= BoardWidth - 2 || y >= BoardHeight - 2;
         OffBoards[sqIdx] = isOffBoards ? "hidden" : "visible";
+        if (!isOffBoards) {
+            row.push(sqIdx)
+        }
     }
+    if (row.length > 0) {
+        BoardRows.push(row);
+    }
+
 }
 
 // Piece code is an integer number that was defined by my server

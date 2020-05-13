@@ -1,6 +1,4 @@
-import React, {ReactComponentElement} from 'react'
-import * as csstype from 'csstype';
-
+import React from 'react'
 import * as reactDND from 'react-dnd'
 import dNDBackendHTML5 from 'react-dnd-html5-backend'
 
@@ -28,29 +26,39 @@ export class Board extends React.Component {
     }
 
     render() {
+        const sqH = `${100 / (xq.BoardHeight - 4)}%`;
+        const sqW = `${100 / (xq.BoardWidth - 4)}%`;
         return (<reactDND.DndProvider backend={dNDBackendHTML5}>
-            <div style={{
-                width: xq.BoardWidth * 60,
-                height: xq.BoardHeight * 60,
-                // display: "inline-block",
+            <table style={{
+                height: (xq.BoardHeight - 4) * 60,
+                width: (xq.BoardWidth - 4) * 60,
+                borderCollapse: "collapse",
+                borderSpacing: 0,
             }}>
-                {xq.SquareIndices.map((sqIdx) =>
-                    <Square key={sqIdx} {...{
-                        index: sqIdx,
-                        visibility: xq.OffBoards[sqIdx],
-                        piece: this.state.SparsePieces[sqIdx],
-                        makeMove: this.makeMove,
-                    }}
-                    />
+                <tbody>
+                {xq.BoardRows.map((row, rowIdx) =>
+                    <tr key={rowIdx} style={{height: sqH,}}>
+                        {row.map((sqIdx) =>
+                            <td key={sqIdx} style={{
+                                height: sqH, width: sqW,
+                            }}>
+                                <Square {...{
+                                    index: sqIdx,
+                                    piece: this.state.SparsePieces[sqIdx],
+                                    makeMove: this.makeMove,
+                                }}/>
+                            </td>
+                        )}
+                    </tr>
                 )}
-            </div>
+                </tbody>
+            </table>
         </reactDND.DndProvider>)
     }
 }
 
 export function Square(props: {
     index: number
-    visibility: csstype.VisibilityProperty
     piece: number
     // function to update the board state
     makeMove: (originSquare: number, targetSquare: number) => void
@@ -66,13 +74,11 @@ export function Square(props: {
         }),
     });
     return (
-        <button ref={drop}
-                style={{
-                    visibility: props.visibility,
-                    width: `${100 / xq.BoardWidth}%`,
-                    height: `${100 / xq.BoardHeight}%`,
-                    fontSize: 8, color: "teal",
-                }}>
+        <button ref={drop} style={{
+            height: `100%`, width: `100%`,
+            textAlign: "left", verticalAlign: "top", fontSize: 8, color: "teal",
+        }}>
+            {props.index}
             <Piece {...{piece: props.piece, sqIdx: props.index}}/>
         </button>)
 }
@@ -89,7 +95,7 @@ export function Piece(props: PieceProps) {
     if (pieceSrc) {
         imgElem =
             <img
-                style={{width: "100%", height: "100%"}}
+                style={{maxWidth: "100%", maxHeight: "100%"}}
                 src={process.env.PUBLIC_URL + pieceSrc}
             />
     }
