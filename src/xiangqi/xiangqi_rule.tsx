@@ -6,7 +6,7 @@ export const BoardWidth = 13;
 export const BoardHeight = 14;
 
 export const SquareIndices: number[] = [];
-// BoardRows does not count padding squares
+// BoardRows is used for drawing html table
 export const BoardRows: number[][] = [];
 // map square index to visibility,
 // the board has 2 ranks and 2 files that should be hidden
@@ -23,10 +23,9 @@ for (let y = BoardHeight - 1; y >= 0; y--) {
             row.push(sqIdx)
         }
     }
-    if (row.length > 0) {
+    if (y != BoardHeight - 1 && y != 0) {
         BoardRows.push(row);
     }
-
 }
 
 // Piece code is an integer number that was defined by my server

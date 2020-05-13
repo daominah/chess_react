@@ -26,12 +26,12 @@ export class Board extends React.Component {
     }
 
     render() {
-        const sqH = `${100 / (xq.BoardHeight - 4)}%`;
+        const sqH = `${100 / (xq.BoardHeight - 2)}%`;
         const sqW = `${100 / (xq.BoardWidth - 4)}%`;
         return (<reactDND.DndProvider backend={dNDBackendHTML5}>
             <table style={{
-                height: (xq.BoardHeight - 4) * 75,
-                width: (xq.BoardWidth - 4) * 75,
+                height: (xq.BoardHeight - 2) * 100,
+                width: (xq.BoardWidth - 4) * 100,
                 borderCollapse: "collapse", borderSpacing: 0,
                 backgroundImage: `url(${Images.Board})`,
                 backgroundRepeat: "no-repeat", backgroundSize: "100% 100%",
@@ -80,7 +80,6 @@ export function Square(props: {
             textAlign: "left", verticalAlign: "top", fontSize: 8, color: "teal",
             background: "rgba(0,0,0,0)", padding: 0, border: "none",
         }}>
-            {props.index}
             <Piece {...{piece: props.piece, sqIdx: props.index}}/>
         </button>)
 }
@@ -97,16 +96,15 @@ export function Piece(props: PieceProps) {
     if (pieceSrc) {
         imgElem =
             <img
-                style={{maxWidth: "100%", maxHeight: "100%"}}
+                style={{width: "100%", height: "100%"}}
                 src={pieceSrc}
             />
     }
     return (
-        <span ref={drag}
-              style={{
-                  opacity: isDragging ? 0.5 : 1, cursor: 'move',
-                  color: "black", zIndex: 1, fontSize: 25,
-              }}>
+        <span ref={drag} style={{
+            opacity: isDragging ? 0.5 : 1, cursor: 'move',
+            color: "black", zIndex: 1, fontSize: 25,
+        }}>
             {imgElem}
         </span>
     )
