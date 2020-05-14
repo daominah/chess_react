@@ -23,12 +23,14 @@ for (let y = BoardHeight - 1; y >= 0; y--) {
             row.push(sqIdx)
         }
     }
-    if (y != BoardHeight - 1 && y != 0) {
+    if (y !== BoardHeight - 1 && y !== 0) {
         BoardRows.push(row);
     }
 }
 
 // Piece code is an integer number that was defined by my server
+export type Piece = number;
+
 export const PAWN = (1);
 export const pawn = (-1);
 export const ADVISER = (2);
@@ -48,29 +50,8 @@ export const OFFBOARD = (255);
 export const UNSEEN = (63);
 export const unseen = (-63);
 
-// PieceSymbols maps piece code to piece symbol
-export const PieceSymbols: Map<number, string> = new Map();
-PieceSymbols.set(PAWN, "P");
-PieceSymbols.set(pawn, "p");
-PieceSymbols.set(ADVISER, "A");
-PieceSymbols.set(adviser, "a");
-PieceSymbols.set(ELEPHANT, "B");
-PieceSymbols.set(elephant, "b"); // Bishop
-PieceSymbols.set(HORSE, "N");
-PieceSymbols.set(horse, "n");// kNight
-PieceSymbols.set(CANNON, "C");
-PieceSymbols.set(cannon, "c");
-PieceSymbols.set(CHARIOT, "R");
-PieceSymbols.set(chariot, "r"); // Rook
-PieceSymbols.set(KING, "K");
-PieceSymbols.set(king, "k");
-PieceSymbols.set(EMPTY, ".");
-PieceSymbols.set(OFFBOARD, "+");
-PieceSymbols.set(UNSEEN, "U");
-PieceSymbols.set(unseen, "u");
-
 // DefaultBoard is starting pieces position in a normal xiangqi game
-export const DefaultBoard = {
+export const DefaultBoard: Record<number, Piece> = {
     106: pawn,
     108: pawn,
     110: pawn,

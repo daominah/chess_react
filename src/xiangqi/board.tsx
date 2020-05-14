@@ -8,19 +8,30 @@ import * as xq from './xiangqi_rule'
 export class Board extends React.Component {
     state: {
         // map square index to piece code
-        SparsePieces: Record<number, number>
+        SparsePieces: Record<number, xq.Piece>
+        // map piece code to number of captured pieces
+        CapturedPieces: Record<xq.Piece, number>
     };
 
     constructor(props: any) {
         super(props);
-        this.state = {SparsePieces: xq.DefaultBoard};
+        this.state = {SparsePieces: xq.DefaultBoard, CapturedPieces: {}};
         this.makeMove = this.makeMove.bind(this);
     }
 
     makeMove(originSquare: number, targetSquare: number) {
-        let movingPiece = this.state.SparsePieces[originSquare];
+        if (originSquare === targetSquare) return;
         let newState = this.state;
-        newState.SparsePieces[targetSquare] = movingPiece;
+        let originPiece = this.state.SparsePieces[originSquare];
+        let targetPiece = this.state.SparsePieces[targetSquare];
+        if (targetPiece) {
+            if (typeof(newState.CapturedPieces[targetPiece]) === "undefined") {
+                newState.CapturedPieces[targetPiece] = 0
+            }
+            newState.CapturedPieces[targetPiece] += 1
+        }
+        console.log(`CapturedPieces: `, newState.CapturedPieces);
+        newState.SparsePieces[targetSquare] = originPiece;
         newState.SparsePieces[originSquare] = xq.EMPTY;
         this.setState(newState);
     }
@@ -60,7 +71,7 @@ export class Board extends React.Component {
 
 export function Square(props: {
     index: number
-    piece: number
+    piece: xq.Piece
     // function to update the board state
     makeMove: (originSquare: number, targetSquare: number) => void
 }) {
@@ -111,7 +122,7 @@ export function Piece(props: PieceProps) {
 }
 
 interface PieceProps {
-    piece: number,
+    piece: xq.Piece,
     // current square this piece belongs to
     sqIdx: number
 }
