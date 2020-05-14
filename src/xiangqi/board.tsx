@@ -19,23 +19,6 @@ export class Board extends React.Component {
         this.makeMove = this.makeMove.bind(this);
     }
 
-    makeMove(originSquare: number, targetSquare: number) {
-        if (originSquare === targetSquare) return;
-        let newState = this.state;
-        let originPiece = this.state.SparsePieces[originSquare];
-        let targetPiece = this.state.SparsePieces[targetSquare];
-        if (targetPiece) {
-            if (typeof(newState.CapturedPieces[targetPiece]) === "undefined") {
-                newState.CapturedPieces[targetPiece] = 0
-            }
-            newState.CapturedPieces[targetPiece] += 1
-        }
-        console.log(`CapturedPieces: `, newState.CapturedPieces);
-        newState.SparsePieces[targetSquare] = originPiece;
-        newState.SparsePieces[originSquare] = xq.EMPTY;
-        this.setState(newState);
-    }
-
     render() {
         const sqH = `${100 / (xq.BoardHeight - 2)}%`;
         const sqW = `${100 / (xq.BoardWidth - 4)}%`;
@@ -66,6 +49,23 @@ export class Board extends React.Component {
                 </tbody>
             </table>
         </reactDND.DndProvider>)
+    }
+
+    makeMove(originSquare: number, targetSquare: number) {
+        if (originSquare === targetSquare) return;
+        let newState = this.state;
+        let originPiece = this.state.SparsePieces[originSquare];
+        let targetPiece = this.state.SparsePieces[targetSquare];
+        if (targetPiece) {
+            if (typeof(newState.CapturedPieces[targetPiece]) === "undefined") {
+                newState.CapturedPieces[targetPiece] = 0
+            }
+            newState.CapturedPieces[targetPiece] += 1
+        }
+        console.log(`CapturedPieces: `, newState.CapturedPieces);
+        newState.SparsePieces[targetSquare] = originPiece;
+        newState.SparsePieces[originSquare] = xq.EMPTY;
+        this.setState(newState);
     }
 }
 
